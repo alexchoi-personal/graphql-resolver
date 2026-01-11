@@ -1,28 +1,24 @@
 # graphql-resolver
 
-A Rust library for building GraphQL servers with trait-based resolvers. Define your schema in SDL, wire up resolvers with simple directives, and get automatic N+1 detection out of the box.
+A Rust library for building GraphQL servers with SDL-first schema design. Define your schema, wire up resolvers with directives, and get automatic N+1 detection.
 
 Built on top of [async-graphql](https://github.com/async-graphql/async-graphql).
 
 ## Features
 
-- **SDL-first schema design** - Write your GraphQL schema in SDL with custom directives to wire up resolvers
-- **Trait-based resolvers** - Implement simple traits to define your query logic
-- **Batch resolvers** - Built-in support for batching to solve the N+1 problem (like DataLoader)
-- **N+1 detection** - Automatically validates your schema for potential N+1 issues at build time
+- **SDL-first** - Define your GraphQL schema in SDL with custom directives
+- **Automatic resolver wiring** - Use `@resolver` directive to connect fields to resolver implementations
+- **Batch resolvers** - Built-in DataLoader-style batching to solve N+1 queries
+- **N+1 detection** - Validates your schema for potential N+1 issues at build time
 - **Framework agnostic** - Works with Axum, Actix, or any async runtime
 
 ## Quick Start
-
-Add to your `Cargo.toml`:
 
 ```toml
 [dependencies]
 graphql-resolver = "0.1"
 tokio = { version = "1", features = ["rt-multi-thread", "macros"] }
 ```
-
-Define your schema and resolvers:
 
 ```rust
 use graphql_resolver::{
@@ -104,7 +100,7 @@ type User {
 }
 ```
 
-When querying multiple users, the `getPostsByUser` resolver receives all user IDs at once instead of being called once per user.
+When querying multiple users, `getPostsByUser` receives all user IDs at once instead of being called per user.
 
 ## Batch Resolvers
 
@@ -138,7 +134,7 @@ impl ErasedBatchResolver for GetPostsByUserResolver {
 }
 ```
 
-## Server Configuration
+## Configuration
 
 ```rust
 use std::time::Duration;
@@ -147,13 +143,13 @@ let server = GraphQLServer::builder()
     .sdl(SCHEMA)
     .register_resolver(GetUserResolver)
     .register_batch_resolver(GetPostsByUserResolver)
-    .batch_delay(Duration::from_millis(2))  // Wait before batching
-    .max_batch_size(100)                     // Max keys per batch
-    .skip_n1_validation()                    // Disable N+1 checks (not recommended)
+    .batch_delay(Duration::from_millis(2))
+    .max_batch_size(100)
+    .skip_n1_validation()  // Not recommended
     .build()?;
 ```
 
-## Integration with Axum
+## Axum Integration
 
 ```rust
 use axum::{extract::State, routing::get, Router};

@@ -132,7 +132,7 @@ mod tests {
     fn test_parse_call_directive_basic() {
         let directive = make_directive(
             "call",
-            vec![("trait", ConstValue::String("getUser".to_string()))],
+            vec![("resolver", ConstValue::String("getUser".to_string()))],
         );
         let result = parse_call_directive(&directive);
         assert!(result.is_some());
@@ -152,7 +152,7 @@ mod tests {
         let directive = make_directive(
             "call",
             vec![
-                ("trait", ConstValue::String("getProfile".to_string())),
+                ("resolver", ConstValue::String("getProfile".to_string())),
                 ("args", ConstValue::Object(obj)),
             ],
         );
@@ -177,7 +177,7 @@ mod tests {
         let directive = make_directive(
             "call",
             vec![
-                ("trait", ConstValue::String("resolver".to_string())),
+                ("resolver", ConstValue::String("resolver".to_string())),
                 ("args", ConstValue::Object(obj)),
             ],
         );
@@ -200,7 +200,7 @@ mod tests {
         let directive = make_directive(
             "call",
             vec![
-                ("trait", ConstValue::String("resolver".to_string())),
+                ("resolver", ConstValue::String("resolver".to_string())),
                 ("args", ConstValue::Object(obj)),
             ],
         );
@@ -313,7 +313,7 @@ mod tests {
         let directive = make_directive(
             "call",
             vec![
-                ("trait", ConstValue::String("resolver".to_string())),
+                ("resolver", ConstValue::String("resolver".to_string())),
                 ("args", ConstValue::String("not an object".to_string())),
             ],
         );
@@ -333,7 +333,7 @@ mod tests {
         let directive = make_directive(
             "call",
             vec![
-                ("trait", ConstValue::String("resolver".to_string())),
+                ("resolver", ConstValue::String("resolver".to_string())),
                 ("args", ConstValue::Object(obj)),
             ],
         );
